@@ -9,7 +9,9 @@ const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
 require('dotenv').config();
 
-const authRouter = require('./routes/auth.router');
+const authRouter = require('./routes/authRouter');
+const userRouter = require('./routes/userRouter');
+const listRouter = require('./routes/listRouter');
 
 
 // MONGOOSE CONNECTION
@@ -19,7 +21,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
-  .then(() => console.log(`Connected to database`))
+  .then(() => console.log(`Connected to LOGLister database `))
   .catch((err) => console.error(err));
 
 
@@ -60,6 +62,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTER MIDDLEWARE
 app.use('/auth', authRouter);
+app.use('/api/user', userRouter);
+app.use('/api/list', listRouter);
 
 
 
