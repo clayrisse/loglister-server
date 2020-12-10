@@ -2,6 +2,7 @@ const express = require("express");
 const app = require("../app");
 const userRouter = express.Router();
 const User = require("../models/user.model");
+const List = require("../models/list.model");
 const uploader = require("./../config/cloudinary");
 
 const bcrypt = require("bcrypt");
@@ -39,7 +40,7 @@ userRouter.get("/edit", isLoggedIn, (req, res, next) => {
 
 //for cloudinary
 userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
-  console.log("file is: ", req.file);
+  console.log("file is: ", req.file);  //test and erase
   if (!req.file) {
     next(new Error("No file uploaded!"));
     return;
@@ -80,6 +81,23 @@ userRouter.delete("/delete", isLoggedIn, (req, res, next) => {
     })
   })
   .catch((err) => next( createError(err) ));
+})
+
+
+userRouter.post("/add", isLoggedIn, (req, res, next) =>{
+  const {name } = req.body
+  console.log("-------------", req.body)
+  console.log("helllo-------------------------------------------")
+  // const {name, type, background} = req.body
+  // const currUser = req.session.currentUser._id;
+  // List.create({name, type, background}) //editorsId, falta
+  List
+  .create({name}) //editorsId, falta
+  .then((newList) => {
+      console.log("helllo----2---------------------------------------")
+      res.status(200).json(newList)
+  })
+  .catch ((err) => next( createError(err)));
 })
 
 

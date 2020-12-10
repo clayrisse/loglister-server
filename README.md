@@ -207,8 +207,8 @@ Item model
 |             |                          |                                                |          |          |                                                              |
 | GET         | `/api/user`              |                                                |          | 400      | List private lists and to do items for the day               |
 | GET         | `/api/user/edit`         | {id}   {username, password, image, isPrivate}  | 201      | 400      | Gets user profile and adds profile picture                   |
-| POST        | `/api/user/edit/:id`     | {username, password, image, isPrivate}         |          |          | Edits user profile and adds profile picture                  |
-| DELETE      | `/api/user/:id`          | {id}                                           | 204      | 400      | Delete user                                                  |
+| POST        | `/api/user/edit/`        | {username, password, image, isPrivate}         |          |          | Edits user profile and adds profile picture                  |
+| DELETE      | `/api/user/`             | {id}                                           | 204      | 400      | Delete user                                                  |
 |             |                          |                                                |          |          |                                                              |
 | POST        | `/api/list/add`          | {background, name, isPrivate, type, editorsId} |          |          | Sends new list setups                                        |
 | GET         | `/api/list/:id`          | {id}                                           |          |          | Show specific list info and ITEMS                            |
