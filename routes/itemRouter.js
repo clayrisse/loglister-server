@@ -13,7 +13,7 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 // ROUTES
 
 //the id: here is from the list REMEMBER
-itemRouter.post('/new/:id', (req, res, next) => { //include the id of the list in the queue
+itemRouter.post('/:id', (req, res, next) => { //include the id of the list in the queue
     const listId = req.params.id //esta pendiente de si esto esta en la ruta
     const {title} = req.body
     
@@ -33,8 +33,7 @@ itemRouter.post('/new/:id', (req, res, next) => { //include the id of the list i
 })
 
 
-
-itemRouter.put('/edit/:id', (req, res, next) => {
+itemRouter.put('/:id', (req, res, next) => {
     const itemId = req.params.id
     const {title, notes, isDone} = req.body;  //later include "status" key
     const doDate = req.body.setDate //REMEMBER to set the "form with this "setDate" key
@@ -49,7 +48,27 @@ itemRouter.put('/edit/:id', (req, res, next) => {
 })
 
 
+itemRouter.delete('/:id', (req, res, next) => {
+    const itemId = req.params.id
+    
+    Item 
+    .findById(itemId)
+    .then((foundItem) => {
+        const itemsListId = foundItem.listId
+        console.log("foundItem------------------------", foundItem)
+        List
+        .findByIdAndUpdate(itemsListId, { $pull: { listItems: itemId }}, { new: true })
+        .then((result) => console.log('result', result))
+        .catch((err) => next( createError(err)))
+    })
+    .catch((err) => next( createError(err)))
+    
+    Item
+    .findByIdAndRemove(itemId)
+    // .then((removeItem) => res.status(204).send())
+    .then((removeItem) => res.status(204).json(removeItem))
+    .catch((err) => next( createError(err)))
+})
+
 
 module.exports = itemRouter;
-
-// listId, title, notes, isDone, status, categoryTitle, doDate: {   hasDate: {type: Boolean, default: false},  date: Date,

@@ -5,12 +5,14 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const User = require("../models/user.model");
 
+
 // HELPER FUNCTIONS
 const {
   isLoggedIn,
   isNotLoggedIn,
   validationLogin
 } = require("../helpers/middlewares");
+
 
 // POST '/auth/signup'
 router.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
@@ -51,9 +53,6 @@ router.post('/signup', isNotLoggedIn, validationLogin, (req, res, next) => {
 
 })
 
-
-
-
 // POST '/auth/login'
 router.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
   const { username, password } = req.body;
@@ -87,7 +86,6 @@ router.post('/login', isNotLoggedIn, validationLogin, (req, res, next) => {
     });
 })
 
-
 // GET '/auth/logout'
 router.get('/logout',  isLoggedIn, (req, res, next) => {
   req.session.destroy( function(err){
@@ -100,8 +98,6 @@ router.get('/logout',  isLoggedIn, (req, res, next) => {
       .send();
   } )
 })
-
-
 
 // GET '/auth/me'
 router.get('/me', isLoggedIn, (req, res, next) => {

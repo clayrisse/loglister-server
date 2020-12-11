@@ -11,8 +11,8 @@ const saltRounds = 10;
 // HELPER FUNCTIONS
 const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middlewares");
 
-// ---routes
 
+// ROUTES
 
 userRouter.get("/", isLoggedIn, (req, res, next) => {
   const currentUser = req.session.currentUser._id;
