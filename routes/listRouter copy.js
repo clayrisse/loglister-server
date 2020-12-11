@@ -84,55 +84,62 @@ listRouter.put('/:id', isLoggedIn, (req, res, next) => {
     const listId = req.params.id;
     const currentUserId = req.session.currentUser._id
     const {name, type, background , isPrivate , editorsName  } = req.body
+
     let editorId = undefined
     // if ( currentUserId == foundList.ownerId || currentUserId == foundList.editorId._ID){ // 
 
-    findListAndUpdateIt = (editorId) => {
-
-        List
-        .findById(listId)
-        .then((foundedList) => {
-            const oldEditorId = foundedList.editorId
-
-            User //erases list from old editors list
-            .findByIdAndUpdate(oldEditorId, {$pull: {editorsListsId: listId}})
-            .then((updatedUser)=> res.status(201).json(updatedUser))
-            .catch ((err) =>  next( createError(err)));
-        })
-
+    findUserAndUpdateIt = (editorId) => {
+        console.log('editorId', editorId)
+        console.log('listId', listId)
+        console.log('name', name)
         List
         .findByIdAndUpdate(listId,  {$set: {name, type, background, isPrivate, editorId:editorId}}, {new:true})
-        .then((editedUser) => res.status(418).json(editedUser))
-        .catch ((err) =>  next( createError(err))); 
-
+        .then((editedUser) => {
+            console.log('editedUser', editedUser)
+            res.status(418).json(editedUser)
+        .catch ((err) =>  next( createError(err)));
+        })
     }
 
-    if (req.body.editorsName) {
+   
 
+    if (req.body.editorsName) {
         User
         .findOne({username: editorsName})
-        .then((editorObj) => { //it makes sure the user exits and it maches another user in DB by username
-            
-            if (editorObj) {
-                findListAndUpdateIt(editorObj._id)//overwrites and ads new value in case it exists
-            
-                User
-                .findByIdAndUpdate(editorObj._id, {$push: {editorsListsId:listId}})
-                .then((editedUser) => {
-        
-                    User
+        .then((editorObj) => { //it makes sure the user exits and it maches anoter in DB
+            console.log('editorObj', editorObj)
+            editorObj
+            ? findUserAndUpdateIt(editorObj._id)//overwrites and ads new value in case it exists
+            : findUserAndUpdateIt(editorId)  
+
+            editorObj //finds las editor and removes id from his "editorsListId" array
+            // console.log('it issssssssssssssssss', it issssssssssssssssss)
+            User
+            .findByIdAndUpdate(editorObj._id, {$push: {editorsListsId:listId}})
+            .then((editedUser) => {
+                console.log('editedUserpush------------', editedUser)
+                 User
                     .findByIdAndUpdate(editorId, {$pull: {editorsListsId:listId}})
-                    .then(() => res.status(200).json(editedUser))
-                    .catch ((err) => next( createError(err)));  
-                })
-                .catch ((err) =>  next( createError(err)));
+                    .then((editedUser) => {
+                        console.log('editedUserpull------------', editedUser)
+                        res.status(418).json(editedUser)
+                    .catch ((err) =>  next( createError(err)));
+                    }) 
+                 res.status(418).json(editedUser)
+            .catch ((err) =>  next( createError(err)));
+            }) 
 
-            }   else  findListAndUpdateIt(editorId) 
-        }) 
-        .catch ((err) =>  next( createError(err)));
+            
+            
+            
 
-    }   else  findListAndUpdateIt(editorId) 
+        })           
+    }   else  findUserAndUpdateIt(editorId) 
 })
   
+
+// "background": "https://images.unsplash.com/photo-1554382983-4316587176f6?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=666&q=80",
+// "isPrivate": true,
+// "type": "list",
 
 module.exports = listRouter;

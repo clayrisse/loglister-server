@@ -48,7 +48,7 @@ userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
    res.json({ secure_url: req.file.secure_url });
 });
 
-userRouter.post("/edit", isLoggedIn, (req, res, next) => {
+userRouter.put("/edit", isLoggedIn, (req, res, next) => {
   const { username, image } = req.body;
   const password = req.body.password
   const salt = bcrypt.genSaltSync(saltRounds);
@@ -63,8 +63,8 @@ userRouter.post("/edit", isLoggedIn, (req, res, next) => {
       userValues , { new: true }
     )
     .then((editedUser) => {
-      req.session.currentUser = editedUser;
-        res.status(418).json(editedUser);
+      req.session.currentUser = editedUser
+        res.status(418).json(editedUser)
     })
     .catch((err) => next( createError(err) ));
 });
@@ -84,21 +84,11 @@ userRouter.delete("/delete", isLoggedIn, (req, res, next) => {
 })
 
 
-userRouter.post("/add", isLoggedIn, (req, res, next) =>{
-  const {name } = req.body
-  console.log("-------------", req.body)
-  console.log("helllo-------------------------------------------")
-  // const {name, type, background} = req.body
-  // const currUser = req.session.currentUser._id;
-  // List.create({name, type, background}) //editorsId, falta
-  List
-  .create({name}) //editorsId, falta
-  .then((newList) => {
-      console.log("helllo----2---------------------------------------")
-      res.status(200).json(newList)
-  })
-  .catch ((err) => next( createError(err)));
-})
-
 
 module.exports = userRouter;
+
+
+
+
+
+
