@@ -8,7 +8,7 @@ const Item = require("../models/item.model");
 
 // HELPER FUNCTIONS
 const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middlewares");
-const { findByIdAndUpdate } = require("../models/user.model");
+const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 // ROUTES
 
@@ -134,5 +134,27 @@ listRouter.put('/:id', isLoggedIn, (req, res, next) => {
     }   else  findListAndUpdateIt(editorId) 
 })
   
+
+listRouter.delete('/:id', isLoggedIn, (req, res, next) => {
+    const currUser = req.session.currentUser._id;
+    const listId = req.params.id
+
+    User //erase from editors list
+    .findOneAndUpdate({editorsListsId:listId}, {$pull: {editorsListsId: listId}})
+    .then((foundedMan) => console.log("foundedMan", foundedMan))
+    .catch((err) => next(createError(err)))
+
+    List 
+    .findByIdAndDelete(listId)
+    .then(deletedList => {
+
+        User
+        .findByIdAndUpdate(currUser,{ $pull: { listsId: listId} }, { new: true })
+        .then(() => res.status(204).send())
+        .catch((err) => next(createError(err)))
+    })
+    .catch((err) => next(createError(err)))
+})
+
 
 module.exports = listRouter;
