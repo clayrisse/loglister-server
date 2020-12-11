@@ -12,6 +12,7 @@ require('dotenv').config();
 const authRouter = require('./routes/authRouter');
 const userRouter = require('./routes/userRouter');
 const listRouter = require('./routes/listRouter');
+const itemRouter = require('./routes/itemRouter');
 
 
 // MONGOOSE CONNECTION
@@ -64,6 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/list', listRouter);
+app.use('/api/item', itemRouter);
 
 
 

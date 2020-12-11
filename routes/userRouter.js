@@ -13,7 +13,7 @@ const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middl
 
 // ---routes
 
-//home
+
 userRouter.get("/", isLoggedIn, (req, res, next) => {
   const currentUser = req.session.currentUser._id;
   User.findById(currentUser)
@@ -40,6 +40,7 @@ userRouter.get("/edit", isLoggedIn, (req, res, next) => {
 
 //for cloudinary
 userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
+
   console.log("file is: ", req.file);  //test and erase
   if (!req.file) {
     next(new Error("No file uploaded!"));
@@ -47,6 +48,7 @@ userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
   }
    res.json({ secure_url: req.file.secure_url });
 });
+
 
 userRouter.put("/edit", isLoggedIn, (req, res, next) => {
   const { username, image } = req.body;

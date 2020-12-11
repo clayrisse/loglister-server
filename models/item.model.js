@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
-    creatorId: { type: Schema.Types.ObjectId, ref: "User" },
-    editorsId: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    // creatorId: { type: Schema.Types.ObjectId, ref: "User" },
+    // editorsId: [{ type: Schema.Types.ObjectId, ref: "User" }],
   
     listId: { type: Schema.Types.ObjectId, ref: "List" },
     title: { type: String, maxlength: 50, default: "+ add" },

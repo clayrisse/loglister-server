@@ -30,10 +30,11 @@ listRouter.post('/add', isLoggedIn, (req, res, next) =>{
             User
             .findByIdAndUpdate(ownerId, {$push: {listsId: newListId}}, {new:true})
             .then(()=> res.status(200).send())
-            .catch ((err) =>  next( createError(err)));
+            .catch ((err) => next( createError(err)));
 
             includeListIdInCoeditor ()
-        })    
+        })        
+        .catch((err) =>  next( createError(err)));         // SI PETA ALGO, EMPIEZA BORRANDO ESTO
     }
 
     includeListIdInCoeditor = () => {
@@ -66,6 +67,7 @@ listRouter.get('/:id', isLoggedIn, (req, res, next) => {
     List
     .findById(listId)
     .populate("editorId")
+    .populate("listItems")
     .then((foundList) => {
         console.log("foundList", foundList)
         if ( currentUserId == foundList.ownerId || !foundList.isPrivate ) { //dont touch the doble=
@@ -73,7 +75,6 @@ listRouter.get('/:id', isLoggedIn, (req, res, next) => {
          } else { 
             console.log("--------STOP looking other people's lists-------")
             next( createError(404)  )
-           
         }
     })
     .catch ((err) =>  next( createError(err)));
