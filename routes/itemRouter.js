@@ -12,13 +12,13 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 // ROUTES
 
-
+//the id: here is from the list REMEMBER
 itemRouter.post('/new/:id', (req, res, next) => { //include the id of the list in the queue
     const listId = req.params.id //esta pendiente de si esto esta en la ruta
     const {title} = req.body
     
     Item
-    .create({title})
+    .create({title, listId})
     .then(createdItem => {
         const newItemId = createdItem._id
         
@@ -31,6 +31,24 @@ itemRouter.post('/new/:id', (req, res, next) => { //include the id of the list i
     })
     .catch(err => next(createError(err)))
 })
+
+
+
+itemRouter.put('/edit/:id', (req, res, next) => {
+    const itemId = req.params.id
+    const {title, notes, isDone} = req.body;  //later include "status" key
+    const doDate = req.body.setDate //REMEMBER to set the "form with this "setDate" key
+        ? { hasDate: true, date: req.body.setDate}
+        : { hasDate: false, date: Date.now()} //REMEMBER to use the one bellow, this one is for checking date functioning
+        // : { hasDate: false}
+
+    Item
+    .findByIdAndUpdate(itemId, {title, notes, isDone, doDate})
+    .then((updatedItem) => res.status(201).json(updatedItem))
+    .catch((err) => next( createError(err)))
+})
+
+
 
 module.exports = itemRouter;
 
