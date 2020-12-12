@@ -12,7 +12,7 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 // ROUTES
 
-listRouter.post('/add', isLoggedIn, (req, res, next) =>{
+listRouter.post('/', isLoggedIn, (req, res, next) =>{
     
     console.log('req.body', req.body)
     const {name, type, background, editorsName  } = req.body
@@ -33,6 +33,8 @@ listRouter.post('/add', isLoggedIn, (req, res, next) =>{
             .catch ((err) => next( createError(err)));
 
             includeListIdInCoeditor ()
+            
+            res.status(201).json(createdList)
         })        
         .catch((err) =>  next( createError(err)));         // SI PETA ALGO, EMPIEZA BORRANDO ESTO
     }
@@ -40,7 +42,7 @@ listRouter.post('/add', isLoggedIn, (req, res, next) =>{
     includeListIdInCoeditor = () => {
         User
         .findByIdAndUpdate(editorId, { $push: { editorsListsId: newListId }}, {new:true})
-        .then((prObj)=> res.status(200).send())
+        .then(()=> res.status(200).send())
         .catch((err) =>  next( createError(err)));
     } 
 
@@ -82,6 +84,7 @@ listRouter.get('/:id', isLoggedIn, (req, res, next) => {
 
 
 listRouter.put('/:id', isLoggedIn, (req, res, next) => {
+
     const listId = req.params.id;
     const currentUserId = req.session.currentUser._id
     const {name, type, background , isPrivate , editorsName  } = req.body
@@ -98,13 +101,13 @@ listRouter.put('/:id', isLoggedIn, (req, res, next) => {
             User //erases list from old editors list
             .findByIdAndUpdate(oldEditorId, {$pull: {editorsListsId: listId}})
             .then((updatedUser)=> res.status(201).json(updatedUser))
-            .catch ((err) =>  next( createError(err)));
+            .catch ((err) => next( createError(err) ));
         })
 
         List
         .findByIdAndUpdate(listId,  {$set: {name, type, background, isPrivate, editorId:editorId}}, {new:true})
         .then((editedUser) => res.status(418).json(editedUser))
-        .catch ((err) =>  next( createError(err))); 
+        .catch ((err) => next( createError(err) )); 
 
     }
 
@@ -126,23 +129,25 @@ listRouter.put('/:id', isLoggedIn, (req, res, next) => {
                     .then(() => res.status(200).json(editedUser))
                     .catch ((err) => next( createError(err)));  
                 })
-                .catch ((err) =>  next( createError(err)));
+                .catch ((err) => next( createError(err) ));
 
-            }   else  findListAndUpdateIt(editorId) 
+            } else  findListAndUpdateIt(editorId) 
         }) 
-        .catch ((err) =>  next( createError(err)));
+        .catch ((err) => next( createError(err) ));
 
-    }   else  findListAndUpdateIt(editorId) 
+    } else  findListAndUpdateIt(editorId)
+     
 })
   
 
 listRouter.delete('/:id', isLoggedIn, (req, res, next) => {
+
     const currUser = req.session.currentUser._id;
     const listId = req.params.id
 
     User //erase from editors list
     .findOneAndUpdate({editorsListsId:listId}, {$pull: {editorsListsId: listId}})
-    .then((foundedMan) => console.log("foundedMan", foundedMan))
+    .then((foundedMan) => res.status(200).send())
     .catch((err) => next(createError(err)))
 
     List 
@@ -155,6 +160,7 @@ listRouter.delete('/:id', isLoggedIn, (req, res, next) => {
         .catch((err) => next(createError(err)))
     })
     .catch((err) => next(createError(err)))
+
 })
 
 

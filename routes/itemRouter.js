@@ -12,8 +12,8 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 // ROUTES
 
-//the id: here is from the list REMEMBER
-itemRouter.post('/:id', (req, res, next) => { //include the id of the list in the queue
+
+itemRouter.post('/:id', (req, res, next) => { //the id: here is from the LIst! REMEMBER include in front
     const listId = req.params.id //esta pendiente de si esto esta en la ruta
     const {title} = req.body
     
@@ -55,7 +55,7 @@ itemRouter.delete('/:id', (req, res, next) => {
     .findById(itemId)
     .then((foundItem) => {
         const itemsListId = foundItem.listId
-        console.log("foundItem------------------------", foundItem)
+
         List
         .findByIdAndUpdate(itemsListId, { $pull: { listItems: itemId }}, { new: true })
         .then((result) => console.log('result', result))
@@ -65,8 +65,7 @@ itemRouter.delete('/:id', (req, res, next) => {
     
     Item
     .findByIdAndRemove(itemId)
-    // .then((removeItem) => res.status(204).send())
-    .then((removeItem) => res.status(204).json(removeItem))
+    .then(() => res.status(204).send())
     .catch((err) => next( createError(err)))
 })
 

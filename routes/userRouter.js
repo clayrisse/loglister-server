@@ -21,22 +21,10 @@ userRouter.get("/", isLoggedIn, (req, res, next) => {
     .then ((user) => {
       user.password="****"
       req.session.currentUser = user;
-      res.status(201).json(user)
+      res.status(200).json(user)
     })
   .catch ((err) => next( createError(err)));
 });
-
-
-userRouter.get("/edit", isLoggedIn, (req, res, next) => {
-  const currentUser = req.session.currentUser._id;
-  User.findById(currentUser)
-    .then ((user) => {
-      user.password="****"
-      req.session.currentUser = user;
-      res.status(201).json(user)
-    })
-  .catch ((err) => next( createError(err)));
-})
 
 //for cloudinary
 userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
@@ -50,7 +38,7 @@ userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
 });
 
 
-userRouter.put("/edit", isLoggedIn, (req, res, next) => {
+userRouter.put("/", isLoggedIn, (req, res, next) => {
   const { username, image } = req.body;
   const password = req.body.password
   const salt = bcrypt.genSaltSync(saltRounds);
@@ -66,13 +54,13 @@ userRouter.put("/edit", isLoggedIn, (req, res, next) => {
     )
     .then((editedUser) => {
       req.session.currentUser = editedUser
-        res.status(418).json(editedUser)
+        res.status(200).json(editedUser)
     })
     .catch((err) => next( createError(err) ));
 });
 
 
-userRouter.delete("/delete", isLoggedIn, (req, res, next) => {
+userRouter.delete("/", isLoggedIn, (req, res, next) => {
  
   User
   .findByIdAndDelete(req.session.currentUser._id)
@@ -84,7 +72,6 @@ userRouter.delete("/delete", isLoggedIn, (req, res, next) => {
   })
   .catch((err) => next( createError(err) ));
 })
-
 
 
 module.exports = userRouter;
