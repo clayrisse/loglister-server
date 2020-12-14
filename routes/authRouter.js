@@ -7,11 +7,7 @@ const User = require("../models/user.model");
 
 
 // HELPER FUNCTIONS
-const {
-  isLoggedIn,
-  isNotLoggedIn,
-  validationLogin
-} = require("../helpers/middlewares");
+const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middlewares");
 
 
 // ROUTES

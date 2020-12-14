@@ -13,8 +13,8 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 // ROUTES
 
 
-itemRouter.post('/:id', (req, res, next) => { //the id: here is from the LIst! REMEMBER include in front
-    const listId = req.params.id //esta pendiente de si esto esta en la ruta
+itemRouter.post('/:idList', (req, res, next) => { //the id: here is from the LIst! REMEMBER include in front
+    const listId = req.params.idList //esta pendiente de si esto esta en la ruta
     const {title} = req.body
     
     Item
@@ -33,8 +33,8 @@ itemRouter.post('/:id', (req, res, next) => { //the id: here is from the LIst! R
 })
 
 
-itemRouter.put('/:id', (req, res, next) => {
-    const itemId = req.params.id
+itemRouter.put('/:idItem', (req, res, next) => {
+    const itemId = req.params.idItem
     const {title, notes, isDone} = req.body;  //later include "status" key
     const doDate = req.body.setDate //REMEMBER to set the "form with this "setDate" key
         ? { hasDate: true, date: req.body.setDate}
@@ -48,8 +48,8 @@ itemRouter.put('/:id', (req, res, next) => {
 })
 
 
-itemRouter.delete('/:id', (req, res, next) => {
-    const itemId = req.params.id
+itemRouter.delete('/:idItem', (req, res, next) => {
+    const itemId = req.params.idItem
     
     Item 
     .findById(itemId)

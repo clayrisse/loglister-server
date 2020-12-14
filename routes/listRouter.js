@@ -63,8 +63,8 @@ listRouter.post('/', isLoggedIn, (req, res, next) =>{
 })
 
 
-listRouter.get('/:id', isLoggedIn, (req, res, next) => {
-    const listId = req.params.id
+listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
+    const listId = req.params.idList
     const currentUserId = req.session.currentUser._id
     List
     .findById(listId)
@@ -83,9 +83,9 @@ listRouter.get('/:id', isLoggedIn, (req, res, next) => {
 })
 
 
-listRouter.put('/:id', isLoggedIn, (req, res, next) => {
+listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
 
-    const listId = req.params.id;
+    const listId = req.params.idList;
     const currentUserId = req.session.currentUser._id
     const {name, type, background , isPrivate , editorsName  } = req.body
     let editorId = undefined
@@ -140,10 +140,10 @@ listRouter.put('/:id', isLoggedIn, (req, res, next) => {
 })
   
 
-listRouter.delete('/:id', isLoggedIn, (req, res, next) => {
+listRouter.delete('/:idList', isLoggedIn, (req, res, next) => {
 
     const currUser = req.session.currentUser._id;
-    const listId = req.params.id
+    const listId = req.params.idList
 
     User //erase from editors list
     .findOneAndUpdate({editorsListsId:listId}, {$pull: {editorsListsId: listId}})

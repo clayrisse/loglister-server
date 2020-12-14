@@ -16,15 +16,35 @@ const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middl
 
 userRouter.get("/", isLoggedIn, (req, res, next) => {
   const currentUser = req.session.currentUser._id;
-  User.findById(currentUser)
-    .populate(/*whit all the lists*/) // still to do more
+  // console.log('req.session.currentUser', req.session.currentUser)
+    User
+    .findById(currentUser)
+    .populate({ path : 'listsId', populate: { path: 'listItems' }})
     .then ((user) => {
       user.password="****"
       req.session.currentUser = user;
+      console.log('user', user)
       res.status(200).json(user)
     })
-  .catch ((err) => next( createError(err)));
+    .catch ((err) => next( createError(err)));
+
 });
+
+
+// userRouter.get("/", isLoggedIn, (req, res, next) => {
+//   const currentUser = req.session.currentUser._id;
+//   console.log('req.session.currentUser', req.session.currentUser)
+//     User
+//     .findById(currentUser)
+//     // .populate("listsId") // still to do more
+//     .then ((user) => {
+//       user.password="****"
+//       req.session.currentUser = user;
+//       console.log('user', user)
+//       res.status(200).json(user)
+//     })
+//     .catch ((err) => next( createError(err)));
+// });
 
 //for cloudinary
 userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
