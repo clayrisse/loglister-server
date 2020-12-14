@@ -33,7 +33,11 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.PUBLIC_DOMAIN],
+    origin: [
+      process.env.PUBLIC_DOMAIN,
+      'http://loglister.herokuapp.com',   
+      'https://loglister.herokuapp.com'
+    ],
   }),
 );
 
@@ -66,6 +70,13 @@ app.use('/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/list', listRouter);
 app.use('/api/item', itemRouter);
+
+
+// ROUTE FOR SERVING REACT APP (index.html)
+app.use((req, res, next) => {
+  // If no previous routes match the request, send back the React app.
+  res.sendFile(__dirname + "/public/index.html");
+});
 
 
 
