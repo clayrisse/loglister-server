@@ -8,10 +8,10 @@ const userSchema = new Schema({
   image: { type: String, default: "/icons/user-default.png"  },
   isPrivate: { type: Boolean, default: "true"},
   listsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
+  editorsListsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
   // itemsId: [{ type: Schema.Types.ObjectId, ref: "Item" }],
   // followedListsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
   // followedUsersId: [{ type: Schema.Types.ObjectId, ref: "List" }],
-  editorsListsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
 }, {
   timestamps: {
     createdAt: 'created_at',

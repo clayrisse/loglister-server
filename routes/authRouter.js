@@ -75,7 +75,7 @@ router.get('/logout',  isLoggedIn, (req, res, next) => {
 
 
 router.get('/me', isLoggedIn, (req, res, next) => {
-
+  req.session.currentUser.password = "*"
   const currentUserSessionData = req.session.currentUser;
   res.status(200).json(currentUserSessionData);
 
