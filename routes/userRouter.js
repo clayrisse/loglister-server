@@ -24,7 +24,7 @@ userRouter.get("/", isLoggedIn, (req, res, next) => {
     .then ((user) => {
       user.password=""
       req.session.currentUser = user;
-      console.log('user', user)
+      // console.log('user', user)
       res.status(200).json(user)
     })
     .catch ((err) => next( createError(err)));

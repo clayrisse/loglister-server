@@ -14,7 +14,7 @@ const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 listRouter.post('/', isLoggedIn, (req, res, next) =>{
     
-    console.log('req.body', req.body)
+    //console.log('req.body', req.body)
     const {name, type, background, editorsName  } = req.body
     let editorId = undefined
     const authorId = req.session.currentUser._id;
@@ -71,7 +71,7 @@ listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
     .populate("editorId")
     .populate("listItems")
     .then((foundList) => {
-        console.log("foundList", foundList)
+        //console.log("foundList", foundList)
         if ( currentUserId == foundList.ownerId || !foundList.isPrivate ) { //dont touch the doble=
             res.status(200).json(foundList) //i im the owner or is public
          } else { 
@@ -90,17 +90,13 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
     const {name, type, background , isPrivate , editorsName  } = req.body
     let editorId = undefined
 
-    console.log('req.body', req.body)
-    console.log('name', name)
-
+ 
     let editedDataObj = {} //these object passes only feilds that are not empty
     name        ? editedDataObj.name        = name        : editedDataObj
     background  ? editedDataObj.background  = background  : editedDataObj
     isPrivate   ? editedDataObj.isPrivate   = isPrivate   : editedDataObj
     type        ? editedDataObj.type        = type        : editedDataObj
     // editorsName is checked and searched later
-    
-console.log('editedDataObj---------------', editedDataObj)
 
     // if ( currentUserId == foundList.ownerId || currentUserId == foundList.editorId._ID){ // 
 

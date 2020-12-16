@@ -8,6 +8,7 @@ const itemSchema = new Schema({
     // status: { type: String, enum: [ "todo", "done", "item", "category"], default: "todo"},
   
     listId: { type: Schema.Types.ObjectId, ref: "List" },
+    // title: { type: String, maxlength: 50 },
     title: { type: String, maxlength: 50, default: "+ add" },
     notes: { type: String, maxlength: 200 },
     isDone: { type: Boolean, default: false},
