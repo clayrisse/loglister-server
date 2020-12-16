@@ -20,6 +20,7 @@ userRouter.get("/", isLoggedIn, (req, res, next) => {
     User
     .findById(currentUser)
     .populate({ path : 'listsId', populate: { path: 'listItems' }})
+    .populate({ path : 'editorsListsId', populate: { path: 'listItems' }})
     .then ((user) => {
       user.password=""
       req.session.currentUser = user;
@@ -44,14 +45,14 @@ userRouter.post("/upload", uploader.single("image"), (req, res, next) => {
 
 
 userRouter.put("/", isLoggedIn, (req, res, next) => {
-  const { username, image } = req.body;
+  const { username, image, isPrivate} = req.body;
   const password = req.body.password
   const salt = bcrypt.genSaltSync(saltRounds);
   const encryptedPassword = bcrypt.hashSync(password, salt);
     
   const userValues = password
-    ? {username, image, password: encryptedPassword}
-    : {username, image}
+    ? {username, image, isPrivate, password: encryptedPassword}
+    : {username, image, isPrivate}
 
     User.findByIdAndUpdate(
       req.session.currentUser._id,

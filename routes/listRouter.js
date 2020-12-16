@@ -89,6 +89,19 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
     const currentUserId = req.session.currentUser._id
     const {name, type, background , isPrivate , editorsName  } = req.body
     let editorId = undefined
+
+    console.log('req.body', req.body)
+    console.log('name', name)
+
+    let editedDataObj = {} //these object passes only feilds that are not empty
+    name        ? editedDataObj.name        = name        : editedDataObj
+    background  ? editedDataObj.background  = background  : editedDataObj
+    isPrivate   ? editedDataObj.isPrivate   = isPrivate   : editedDataObj
+    type        ? editedDataObj.type        = type        : editedDataObj
+    // editorsName is checked and searched later
+    
+console.log('editedDataObj---------------', editedDataObj)
+
     // if ( currentUserId == foundList.ownerId || currentUserId == foundList.editorId._ID){ // 
 
     findListAndUpdateIt = (editorId) => {
@@ -104,9 +117,13 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
             .catch ((err) => next( createError(err) ));
         })
 
+    
+        editedDataObj.editorId = editorId //config of is cheked by existence or not and changed or deleted acordenly
+
         List
-        .findByIdAndUpdate(listId,  {$set: {name, type, background, isPrivate, editorId:editorId}}, {new:true})
-        .then((editedUser) => res.status(418).json(editedUser))
+        .findByIdAndUpdate(listId,  {$set: {...editedDataObj}}, {new:true})
+        // .findByIdAndUpdate(listId,  {$set: {name, type, background, isPrivate, editorId:editorId}}, {new:true})
+        .then((editedUser) => res.status(201).json(editedUser))
         .catch ((err) => next( createError(err) )); 
 
     }
