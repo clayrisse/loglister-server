@@ -59,13 +59,20 @@ itemRouter.put('/:idItem', (req, res, next) => {
 })
 
 itemRouter.put('/check/:idItem', (req, res, next) => {
+    console.log('req.body', req.body)
+    console.log('req.params', req.params)
     const itemId = req.params.idItem
     const { isDone } = req.body;  //later include "status" key
-   
+   console.log('isDone', isDone)
+   let isDoneBoolean = isDone ? {isDone: true} : {isDone: flase}
+console.log('isDoneBoolean', isDoneBoolean)
     Item
-    .findByIdAndUpdate(itemId, { isDone})
-    .then((updatedItem) => res.status(201).json(updatedItem))
+    .findByIdAndUpdate(itemId, isDoneBoolean)
+    .then((updatedItem) => {
+        console.log('updatedItem.isDone', updatedItem.isDone)
+        res.status(201).json(updatedItem)})
     .catch((err) => next( createError(err)))
+
 })
 
 itemRouter.delete('/:idItem', (req, res, next) => {
