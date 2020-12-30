@@ -113,7 +113,7 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
 
             User //erases list from old editors list
             .findByIdAndUpdate(oldEditorId, {$pull: {editorsListsId: listId}})
-            .then((updatedUser)=> res.status(201).json(updatedUser))
+            .then(()=> res.status(201).json(updatedUser))
             .catch ((err) => next( createError(err) ));
         })
 
@@ -161,8 +161,9 @@ listRouter.delete('/:idList', isLoggedIn, (req, res, next) => {
 
     const currUser = req.session.currentUser._id;
     const listId = req.params.idList
-
-    User //erase from editors list
+//1. erase from editors list
+//2. 
+    User 
     .findOneAndUpdate({editorsListsId:listId}, {$pull: {editorsListsId: listId}})
     .then((foundedMan) => res.status(200).send())
     .catch((err) => next(createError(err)))
