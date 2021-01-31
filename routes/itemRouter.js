@@ -11,6 +11,18 @@ const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middl
 const { findByIdAndUpdate, findOneAndUpdate } = require("../models/user.model");
 
 // ROUTES
+itemRouter.get('/:idItem', (req, res, next) => {
+    const itemId = req.params.idItem
+  
+    Item
+    .findById(itemId)
+    .then((foundItem) => {
+        // console.log('foundItem', foundItem)
+        res.status(201).json(foundItem)
+    })
+
+    .catch((err) => next( createError(err)))
+})
 
 
 itemRouter.post('/:idList', (req, res, next) => { //the id: here is from the LIst! REMEMBER include in front
@@ -24,7 +36,7 @@ itemRouter.post('/:idList', (req, res, next) => { //the id: here is from the LIs
         
         List
         .findByIdAndUpdate(listId, { $push: {listItems: newItemId}})
-        .then((updatedList) => console.log('updatedList', updatedList))
+        // .then((updatedList) => console.log('updatedList', updatedList))
         .catch(err => next(createError(err)))
         
         res.status(200).json(createdItem)
@@ -48,6 +60,18 @@ itemRouter.put('/:idItem', (req, res, next) => {
 })
 
 
+itemRouter.put('/check/:idItem', (req, res, next) => {
+    console.log("object")
+    const itemId = req.params.idItem
+    const {isDone} = req.body;  //later include "status" key
+  
+    Item
+    .findByIdAndUpdate(itemId, {isDone})
+    .then((updatedItem) => res.status(201).json(updatedItem))
+    .catch((err) => next( createError(err)))
+})
+
+
 itemRouter.delete('/:idItem', (req, res, next) => {
     const itemId = req.params.idItem
     
@@ -58,7 +82,7 @@ itemRouter.delete('/:idItem', (req, res, next) => {
 
         List
         .findByIdAndUpdate(itemsListId, { $pull: { listItems: itemId }}, { new: true })
-        .then((result) => console.log('result', result))
+        // .then((result) => console.log('result', result))
         .catch((err) => next( createError(err)))
     })
     .catch((err) => next( createError(err)))

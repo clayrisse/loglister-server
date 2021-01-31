@@ -71,7 +71,7 @@ listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
     .populate("editorId")
     .populate("listItems")
     .then((foundList) => {
-        console.log("foundList", foundList)
+        // console.log("foundList", foundList)
         if ( currentUserId == foundList.ownerId || !foundList.isPrivate ) { //dont touch the doble=
             res.status(200).json(foundList) //i im the owner or is public
          } else { 
