@@ -81,7 +81,7 @@ itemRouter.delete('/:idItem', (req, res, next) => {
 
         List
         .findByIdAndUpdate(itemsListId, { $pull: { listItems: itemId }}, { new: true })
-        // .then((result) => console.log('result', result))
+        .then((result) => console.log('result', result))
         .catch((err) => next( createError(err)))
     })
     .catch((err) => next( createError(err)))
