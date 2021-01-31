@@ -61,7 +61,6 @@ itemRouter.put('/:idItem', (req, res, next) => {
 
 
 itemRouter.put('/check/:idItem', (req, res, next) => {
-    console.log("object")
     const itemId = req.params.idItem
     const {isDone} = req.body;  //later include "status" key
   

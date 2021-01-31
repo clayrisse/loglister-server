@@ -5,6 +5,7 @@ const listSchema = new Schema({
   authorId: { type: Schema.Types.ObjectId, ref: "User" },
   ownerId: { type: Schema.Types.ObjectId, ref: "User" },
   editorId: { type: Schema.Types.ObjectId, ref: "User" },
+  // editorUsername: { type: Schema.Types.ObjectId, ref: "User" },
   
   // followersId: [{ type: Schema.Types.ObjectId, ref: "User" }],
   // status: { type: String, enum: [ "active", "frozen", "deleted"], default: "active"},

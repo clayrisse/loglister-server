@@ -5,7 +5,7 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true  },
   password: { type: String, minlength: 2, required: true }, //change to 6 at the end
   // email: { type: String, match: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, required: true, unique: true },
-  image: { type: String, default: "/icons/user-default.png"  },
+  image: { type: String, default: "https://www.comedy.co.uk/images/library/people/180x200/t/the_it_crowd_moss.jpg"  },
   isPrivate: { type: Boolean, default: "true"},
   listsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
   editorsListsId: [{ type: Schema.Types.ObjectId, ref: "List" }],
