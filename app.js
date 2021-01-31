@@ -40,7 +40,7 @@ app.use(
       'http://loglister.herokuapp.com',   
       'https://loglister.herokuapp.com'
     ],
-  }),
+  })
 );
 
 
