@@ -35,10 +35,11 @@ app.use(
     credentials: true,
     origin: [
       process.env.PUBLIC_DOMAIN,
+      'http://localhost:3000',
       'http://loglister.herokuapp.com',   
       'https://loglister.herokuapp.com'
     ],
-  }),
+  })
 );
 
 

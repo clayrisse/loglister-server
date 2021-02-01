@@ -16,7 +16,6 @@ const { isLoggedIn, isNotLoggedIn, validationLogin } = require("../helpers/middl
 
 userRouter.get("/", isLoggedIn, (req, res, next) => {
   const currentUser = req.session.currentUser._id;
-  // console.log('req.session.currentUser', req.session.currentUser)
     User
     .findById(currentUser)
     .populate({ path : 'listsId', populate: { path: 'listItems' }})

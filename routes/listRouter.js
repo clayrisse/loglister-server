@@ -71,8 +71,8 @@ listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
     .populate("editorId")
     .populate("listItems")
     .then((foundList) => {
-        //console.log("foundList", foundList)
-        if ( currentUserId == foundList.ownerId || currentUserId == foundList.editorId._id || !foundList.isPrivate ) { //dont touch the doble=
+        // console.log("foundList", foundList)
+        if ( currentUserId == foundList.ownerId || !foundList.isPrivate ) { //dont touch the doble=
             res.status(200).json(foundList) //i im the owner or is public
          } else { 
             console.log("--------STOP looking other people's lists-------")
