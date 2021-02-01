@@ -36,8 +36,8 @@ app.use(
     origin: [
       process.env.PUBLIC_DOMAIN,
       'http://localhost:3000',
-      'http://loglister.herokuapp.com',   
-      'https://loglister.herokuapp.com'
+      'http://loglisters.herokuapp.com',   
+      'https://loglisters.herokuapp.com'
     ],
   })
 );
