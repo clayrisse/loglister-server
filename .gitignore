@@ -57,6 +57,7 @@ typings/
 # dotenv environment variables file
 .env
 .env.localDB
+.env.forDeploy
 
 
 # next.js build output
