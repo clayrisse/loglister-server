@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const cors = require('cors');
+const cool = require('cool-ascii-faces')
 require('dotenv').config();
 
 const authRouter = require('./routes/authRouter');
@@ -36,8 +37,8 @@ app.use(
     origin: [
       process.env.PUBLIC_DOMAIN,
       'http://localhost:3000',
-      'http://loglisters.herokuapp.com',   
-      'https://loglisters.herokuapp.com'
+      'http://loglister.herokuapp.com',   
+      'https://loglister.herokuapp.com'
     ],
   })
 );
@@ -67,6 +68,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTER MIDDLEWARE
+
+app.use('/cool', (req, res) => res.send(cool()));
 app.use('/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/list', listRouter);
