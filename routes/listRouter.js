@@ -62,7 +62,6 @@ listRouter.post('/', isLoggedIn, (req, res, next) =>{
     } else createListAndUpdateUser()
 })
 
-
 listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
     const listId = req.params.idList
     const currentUserId = req.session.currentUser._id
@@ -82,26 +81,22 @@ listRouter.get('/:idList', isLoggedIn, (req, res, next) => {
     .catch ((err) =>  next( createError(err)));
 })
 
-
-
-
-
-
 listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
-
     const listId = req.params.idList;
     const currentUserId = req.session.currentUser._id
-    const {name, type, background , isPrivate , editorsName  } = req.body
+    const {name, type, background, backColor, isPrivate , editorsName  } = req.body
     let editorId = undefined
-
- 
+    
+    
     let editedDataObj = {} //these object passes only feilds that are not empty
     name        ? editedDataObj.name        = name        : editedDataObj
     background  ? editedDataObj.background  = background  : editedDataObj
-    isPrivate   ? editedDataObj.isPrivate   = isPrivate   : editedDataObj
+    backColor  ? editedDataObj.backColor  = backColor  : editedDataObj
     type        ? editedDataObj.type        = type        : editedDataObj
+    // isPrivate   ? editedDataObj.isPrivate   = isPrivate   : editedDataObj
+    editedDataObj.isPrivate = isPrivate //Clau if is a false this-> isPrivate? will always be false!!!
     // editorsName is checked and searched later
-
+    
     // if ( currentUserId == foundList.ownerId || currentUserId == foundList.editorId._ID){ // 
 
     findListAndUpdateIt = (editorId) => {
@@ -113,7 +108,7 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
 
             User //erases list from old editors list
             .findByIdAndUpdate(oldEditorId, {$pull: {editorsListsId: listId}})
-            .then(()=> res.status(201).json(updatedUser))
+            .then((updatedUser)=> res.status(201).json(updatedUser))
             .catch ((err) => next( createError(err) ));
         })
 
@@ -156,7 +151,6 @@ listRouter.put('/:idList', isLoggedIn, (req, res, next) => {
      
 })
   
-
 listRouter.delete('/:idList', isLoggedIn, (req, res, next) => {
 
     const currUser = req.session.currentUser._id;
@@ -180,6 +174,5 @@ listRouter.delete('/:idList', isLoggedIn, (req, res, next) => {
     .catch((err) => next(createError(err)))
 
 })
-
 
 module.exports = listRouter;
